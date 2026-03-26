@@ -94,9 +94,9 @@ void MruRosInterface::start_mru_stream() {
 }
 
 void MruRosInterface::mrubin_callback(const MrubinMessage& msg) {
-    sensor_msgs::msg::Imu imu_msg;
-    imu_msg.header.frame_id = frame_id_;
-    imu_msg.header.stamp = this->get_clock()->now();
+    auto imu_msg = std::make_unique<sensor_msgs::msg::Imu>();
+    imu_msg->header.frame_id = frame_id_;
+    imu_msg->header.stamp = this->get_clock()->now();
 
     // Convert euler angles (roll, pitch, yaw) to quaternion
     const double cr = std::cos(msg.roll * 0.5);
@@ -106,20 +106,20 @@ void MruRosInterface::mrubin_callback(const MrubinMessage& msg) {
     const double cy = std::cos(msg.yaw * 0.5);
     const double sy = std::sin(msg.yaw * 0.5);
 
-    imu_msg.orientation.w = cr * cp * cy + sr * sp * sy;
-    imu_msg.orientation.x = sr * cp * cy - cr * sp * sy;
-    imu_msg.orientation.y = cr * sp * cy + sr * cp * sy;
-    imu_msg.orientation.z = cr * cp * sy - sr * sp * cy;
+    imu_msg->orientation.w = cr * cp * cy + sr * sp * sy;
+    imu_msg->orientation.x = sr * cp * cy - cr * sp * sy;
+    imu_msg->orientation.y = cr * sp * cy + sr * cp * sy;
+    imu_msg->orientation.z = cr * cp * sy - sr * sp * cy;
 
-    imu_msg.angular_velocity.x = msg.angle_rate_roll;
-    imu_msg.angular_velocity.y = msg.angle_rate_pitch;
-    imu_msg.angular_velocity.z = msg.angle_rate_yaw;
+    imu_msg->angular_velocity.x = msg.angle_rate_roll;
+    imu_msg->angular_velocity.y = msg.angle_rate_pitch;
+    imu_msg->angular_velocity.z = msg.angle_rate_yaw;
 
-    imu_msg.linear_acceleration.x = msg.acceleration_roll_direction;
-    imu_msg.linear_acceleration.y = msg.acceleration_pitch_direction;
-    imu_msg.linear_acceleration.z = msg.acceleration_yaw_direction;
+    imu_msg->linear_acceleration.x = msg.acceleration_roll_direction;
+    imu_msg->linear_acceleration.y = msg.acceleration_pitch_direction;
+    imu_msg->linear_acceleration.z = msg.acceleration_yaw_direction;
 
-    imu_pub_->publish(imu_msg);
+    imu_pub_->publish(std::move(imu_msg));
 }
 
 RCLCPP_COMPONENTS_REGISTER_NODE(MruRosInterface)
