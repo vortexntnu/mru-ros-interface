@@ -4,7 +4,7 @@
     frame_id: mru_frame
 
     connection_params:
-      remote_ip: "10.0.1.20"
+      remote_ip: "10.0.1.20" # MRU IP
       data_remote_port: 7550
       data_local_port: 7551
       control_local_port: 7552
@@ -12,7 +12,7 @@
     mru_settings:
       channel: "UDP1"
       port: 7551
-      ip_addr: "10.0.1.153"
+      ip_addr: "10.0.0.69" # Host IP
       format: "MRUBIN"
       interval: 5   # Output interval in ms
       token: 21      # MRUBIN token
