@@ -43,7 +43,7 @@ void MruRosInterface::create_driver() {
 }
 
 void MruRosInterface::setup_mru_connection() {
-    ConnectionParams params;
+    MruConnectionParams params;
     params.remote_ip = get_parameter("connection_params.remote_ip").as_string();
     params.data_remote_port = static_cast<uint16_t>(
         get_parameter("connection_params.data_remote_port").as_int());
