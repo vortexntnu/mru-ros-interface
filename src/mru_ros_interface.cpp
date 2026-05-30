@@ -34,7 +34,7 @@ void MruRosInterface::declare_ros_parameters() {
 void MruRosInterface::create_publishers() {
     std::string imu_pub_topic = get_parameter("imu_pub_topic").as_string();
     imu_pub_ = create_publisher<sensor_msgs::msg::Imu>(
-        imu_pub_topic, rclcpp::QoS(1).reliable());
+        imu_pub_topic, rclcpp::QoS(1).best_effort());
 }
 
 void MruRosInterface::create_driver() {
